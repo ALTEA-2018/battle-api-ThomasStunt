@@ -7,6 +7,8 @@ import java.util.List;
 public class Trainer {
 
     private String name;
+    private String password;
+
     private List<Pokemon> team;
 
     public String getName() {
@@ -23,5 +25,13 @@ public class Trainer {
 
     public void setTeam(List<Pokemon> team) {
         this.team = team;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPasssword(String password) {
+        this.password = password;
     }
 }

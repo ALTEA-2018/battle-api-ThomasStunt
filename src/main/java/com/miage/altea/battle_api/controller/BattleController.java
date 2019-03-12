@@ -42,7 +42,6 @@ public class BattleController {
 
     @PostMapping("/{UUID}/{trainerName}/attack")
     public ResponseEntity<Battle> attack(@PathVariable("UUID") UUID battleUuid, @PathVariable("trainerName") String trainerName) {
-        Battle battle;
         try {
             return ResponseEntity.ok(battleService.attack(battleUuid, trainerName));
         } catch (WrongTrainerException wte) {

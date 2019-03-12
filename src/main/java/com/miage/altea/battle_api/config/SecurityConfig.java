@@ -1,7 +1,7 @@
 package com.miage.altea.battle_api.config;
 
 
-import com.miage.altea.tp.pokemon_ui.trainers.service.TrainerService;
+import com.miage.altea.battle_api.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,6 @@ import java.util.Optional;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     TrainerService trainerService;
 
     @Bean
