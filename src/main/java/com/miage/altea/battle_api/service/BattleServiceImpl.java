@@ -2,6 +2,8 @@ package com.miage.altea.battle_api.service;
 
 import com.miage.altea.battle_api.bo.Battle.Battle;
 import com.miage.altea.battle_api.bo.Battle.Pokemon;
+import com.miage.altea.battle_api.bo.PokemonType.PokemonType;
+import com.miage.altea.battle_api.bo.Trainer.Trainer;
 import com.miage.altea.battle_api.exception.FinishedBattleException;
 import com.miage.altea.battle_api.exception.WrongTrainerException;
 import com.miage.altea.battle_api.repository.BattleRepository;
@@ -19,6 +21,7 @@ public class BattleServiceImpl implements BattleService {
 
     BattleRepository battleRepository;
     TrainerService trainerService;
+    PokemonTypeService pokemonTypeService;
 
     @Override
     public List<Battle> listBattles() {
@@ -36,8 +39,8 @@ public class BattleServiceImpl implements BattleService {
         Battle battle = new Battle();
 
         // Set trainers in battle
-        battle.setTrainer(trainerService.getTrainer(trainer));
-        battle.setOpponent(trainerService.getTrainer(opponent));
+        battle.setTrainer(this.buildTrainer(trainer));
+        battle.setOpponent(this.buildTrainer(opponent));
 
         // Set battle Uuid
         battle.setUuid(UUID.randomUUID());
@@ -103,15 +106,30 @@ public class BattleServiceImpl implements BattleService {
                 .findFirst()
                 .get();
 
+        boolean isFinished = false;
+
         // Do the attack
         if(trainer.equals(battle.getTrainer())) {
+            // Compute HP left after attack
             float hpLeft = opponentPokemon.getHp() - BattleUtilitaries.hpAfterAttack(trainerPokemon.getLevel(), trainerPokemon.getAttack(), opponentPokemon.getDefense());
             opponentPokemon.setHp(hpLeft > 0 ? hpLeft : 0);
-            battle.setToPlay(battle.getOpponent());
-        } else {
+
+            // Check end of battle
+            isFinished = battle.getOpponent().getTeam().stream().allMatch(pkmn -> pkmn.getHp() == 0);
+            if(isFinished)
+                battle.setBattleState(BattleState.TERMINATED);
+            else
+                battle.setToPlay(battle.getOpponent());
+        } else if(trainer.equals(battle.getOpponent())){
+            // Compute HP left after attack
             float hpLeft = trainerPokemon.getHp() - BattleUtilitaries.hpAfterAttack(opponentPokemon.getLevel(), opponentPokemon.getAttack(), trainerPokemon.getDefense());
             trainerPokemon.setHp(hpLeft > 0 ? hpLeft : 0);
-            battle.setToPlay(battle.getTrainer());
+
+            // Check end of battle
+            if(isFinished)
+                battle.setBattleState(BattleState.TERMINATED);
+            else
+                battle.setToPlay(battle.getTrainer());
         }
 
         // Save battle
@@ -128,6 +146,34 @@ public class BattleServiceImpl implements BattleService {
     @Autowired
     public void setTrainerService(TrainerService trainerService) {
         this.trainerService = trainerService;
+    }
+
+    @Autowired
+    public void setPokemonTypeService(PokemonTypeService pokemonTypeService) {
+        this.pokemonTypeService = pokemonTypeService;
+    }
+
+    public Trainer buildTrainer(String trainerName) {
+        // Get trainer's default info
+        Trainer trainer = trainerService.getTrainer(trainerName);
+
+        // Get all pokemon
+        List<PokemonType> allPokemon = pokemonTypeService.listPokemonType();
+
+        // Fill trainer's team pokemon's info
+        for(Pokemon p : trainer.getTeam()) {
+            for(PokemonType pType : allPokemon) {
+                if(p.getPokemonType() == pType.getId()) {
+                    p.setHp(pType.getStats().getHp());
+                    p.setAttack(pType.getStats().getAttack());
+                    p.setDefense(pType.getStats().getDefense());
+                    p.setSpeed(pType.getStats().getSpeed());
+                }
+            }
+        }
+
+        // Return trainer
+        return trainer;
     }
 
 }

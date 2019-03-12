@@ -49,14 +49,6 @@ public class Battle {
         this.opponent = opponent;
     }
 
-    public Trainer toPlay() {
-        return toPlay;
-    }
-
-    public void toPlay(Trainer turn) {
-        this.toPlay = toPlay;
-    }
-
     public Trainer getToPlay() {
         return toPlay;
     }
