@@ -2,7 +2,7 @@ package com.miage.altea.battle_api.config;
 
 
 import com.miage.altea.battle_api.service.TrainerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
         return username -> Optional.ofNullable(trainerService.getTrainer(username))
-                .map(trainer -> new User(trainer.getName(), trainer.getPassword(), true, true, true, true, roles))
+                .map(trainer -> new SecurityProperties.User(trainer.getName(), trainer.getPassword(), true, true, true, true, roles))
                 .orElseThrow(() -> new BadCredentialsException("No such user"));
     }
 
