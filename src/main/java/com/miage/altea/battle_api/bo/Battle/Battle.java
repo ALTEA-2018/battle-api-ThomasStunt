@@ -3,27 +3,20 @@ package com.miage.altea.battle_api.bo.Battle;
 import com.miage.altea.battle_api.bo.Trainer.Trainer;
 import com.miage.altea.battle_api.utils.BattleState;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.UUID;
 
-@Entity
 public class Battle {
+    public UUID uuid;
+    public Trainer trainer;
+    public Trainer opponent;
+    public BattleState battleState;
 
-    @Id
-    private UUID uuid;
+    public Battle() {
+    }
 
-    @Column
-    private Trainer trainer;
-
-    @Column
-    private Trainer opponent;
-
-    @Column
-    private Trainer toPlay;
-
-    private BattleState battleState;
+    public Battle(UUID uuid) {
+        this.uuid = uuid;
+    }
 
     public UUID getUuid() {
         return uuid;
@@ -47,14 +40,6 @@ public class Battle {
 
     public void setOpponent(Trainer opponent) {
         this.opponent = opponent;
-    }
-
-    public Trainer getToPlay() {
-        return toPlay;
-    }
-
-    public void setToPlay(Trainer toPlay) {
-        this.toPlay = toPlay;
     }
 
     public BattleState getBattleState() {

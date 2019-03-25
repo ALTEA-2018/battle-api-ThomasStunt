@@ -1,16 +1,14 @@
 package com.miage.altea.battle_api.repository;
 
 import com.miage.altea.battle_api.bo.Battle.Battle;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-public interface BattleRepository extends CrudRepository<Battle, UUID> {
-
+@Repository
+public interface BattleRepository {
     List<Battle> findAll();
-    Optional<Battle> findById(UUID battleUuid);
-    Battle save(Battle battle);
-
+    Battle findById(UUID uuid);
+    void update(Battle battle);
 }

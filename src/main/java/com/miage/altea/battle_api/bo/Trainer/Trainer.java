@@ -6,10 +6,16 @@ import java.util.List;
 
 public class Trainer {
 
-    private String name;
-    private String password;
+    public String name;
+    public List<Pokemon> team;
+    public boolean nextTurn;
 
-    private List<Pokemon> team;
+    public Trainer() {
+    }
+
+    public Trainer(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -27,11 +33,11 @@ public class Trainer {
         this.team = team;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isNextTurn() {
+        return nextTurn;
     }
 
-    public void setPasssword(String password) {
-        this.password = password;
+    public void setNextTurn(boolean nextTurn) {
+        this.nextTurn = nextTurn;
     }
 }

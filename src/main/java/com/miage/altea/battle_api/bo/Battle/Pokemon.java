@@ -1,20 +1,40 @@
 package com.miage.altea.battle_api.bo.Battle;
 
+import com.miage.altea.battle_api.bo.PokemonType.PokemonType;
+
 public class Pokemon {
 
-    private int pokemonType;
-    private int level;
-    private float maxHp;
-    private float attack;
-    private float defense;
-    private float speed;
-    private float hp;
+    public int id;
+    public PokemonType pokemonType;
+    public int level;
+    public float maxHp;
+    public float attack;
+    public float defense;
+    public float speed;
+    public float hp;
+    public boolean ko;
+    public boolean alive;
 
-    public int getPokemonType() {
+    public Pokemon() {
+    }
+
+    public Pokemon(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public PokemonType getPokemonType() {
         return pokemonType;
     }
 
-    public void setPokemonType(int pokemonType) {
+    public void setPokemonType(PokemonType pokemonType) {
         this.pokemonType = pokemonType;
     }
 
@@ -64,5 +84,21 @@ public class Pokemon {
 
     public void setHp(float hp) {
         this.hp = hp;
+    }
+
+    public boolean isKo() {
+        return ko;
+    }
+
+    public void setKo(boolean ko) {
+        this.ko = ko;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }

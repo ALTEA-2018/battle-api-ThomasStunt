@@ -12,14 +12,12 @@ public class PokemonType {
     private Stats stats;
     private int weight;
     private List<String> types;
-    private int level;
 
-    public int getLevel() {
-        return level;
+    public PokemonType() {
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public PokemonType(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -84,5 +82,19 @@ public class PokemonType {
 
     public void setTypes(List<String> types) {
         this.types = types;
+    }
+
+    @Override
+    public String toString() {
+        return "PokemonType{" +
+                "id=" + id +
+                ", baseExperience=" + baseExperience +
+                ", height=" + height +
+                ", name='" + name + '\'' +
+                ", sprites=" + sprites +
+                ", stats=" + stats +
+                ", weight=" + weight +
+                ", types=" + types +
+                '}';
     }
 }
